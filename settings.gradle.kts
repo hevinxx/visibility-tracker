@@ -13,5 +13,6 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "Visibility Tracker"
+rootProject.name = "visibility-tracker"
 include(":app")
+include(":visibilitytracker")
