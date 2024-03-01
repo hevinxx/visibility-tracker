@@ -1,4 +1,4 @@
-VisibilityTracker for Jetpack Compose
+VisibilityTracker for Jetpack Compose [![](https://jitpack.io/v/hevinxx/visibility-tracker.svg)](https://jitpack.io/#hevinxx/visibility-tracker)
 =====================================
 
 VisibilityTracker is designed for Jetpack Compose that enables developers to easily monitor and respond to changes in the visibility of composables within the user interface. Whether you're building dynamic UIs that react to user scrolling or need to trigger actions based on the visibility of elements, VisibilityTracker provides a simple yet powerful solution.
@@ -30,6 +30,36 @@ VisibilityTracker(
 }
 ```
 
+Installation
+------------
+
+Step1. Add it in your root build.gradle at the end of repositories:
+```gradle
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        mavenCentral()
+        maven { url 'https://jitpack.io' }
+    }
+}
+```
+or in your settings.gradle.kts if you're using kotlin DSL:
+```kts
+dependencyResolutionManagement { 
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories { 
+        mavenCentral()
+        maven { url = uri("https://jitpack.io") } 
+    }
+}
+```
+
+Step2. Add the dependency:
+```gradle
+dependencies {
+    implementation 'com.github.hevinxx:visibility-tracker:Tag'
+}
+```
 Contributing
 ------------
 
