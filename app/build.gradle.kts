@@ -37,6 +37,8 @@ android {
     composeOptions {
         kotlinCompilerExtensionVersion = "1.5.9"
     }
+
+    resourcePrefix = "visibility_tracker_"
 }
 
 dependencies {
