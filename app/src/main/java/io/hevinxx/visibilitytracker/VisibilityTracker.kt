@@ -48,7 +48,11 @@ fun VisibilityTracker(
         content()
     }
 
+    var previousVisibleRatio by remember { mutableStateOf<Float?>(null) }
     LaunchedEffect(key1 = visibleRatio) {
-        onVisibleRatioChanged(visibleRatio)
+        if (visibleRatio != previousVisibleRatio) {
+            previousVisibleRatio = visibleRatio
+            onVisibleRatioChanged(visibleRatio)
+        }
     }
 }
