@@ -12,6 +12,30 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Rect
 import androidx.compose.ui.layout.onGloballyPositioned
 
+/**
+ * A composable function that tracks the visibility ratio of its content and invokes a callback
+ * whenever the visible ratio changes. This is particularly useful for detecting when a component
+ * becomes visible or hidden in parts, such as in scrolling lists or when obscured by other elements.
+ *
+ * @param onVisibleRatioChanged A callback function that is invoked with the current visibility ratio.
+ *                              The visibility ratio is a float value between 0 and 1, where 1 means
+ *                              fully visible and 0 means not visible.
+ * @param content The composable content whose visibility is to be tracked. This content is wrapped
+ *                within the VisibilityTracker and its visibility changes are monitored.
+ *
+ * Example usage:
+ * ```
+ * VisibilityTracker(onVisibleRatioChanged = { ratio ->
+ *     println("Current visibility ratio: $ratio")
+ * }) {
+ *     // Your composable content here
+ * }
+ * ```
+ *
+ * Note: The visibility ratio calculation takes into account the visible area of the content
+ * relative to its total area, adjusting for any overlap with parent composables or the edge
+ * of the screen.
+ */
 @Composable
 fun VisibilityTracker(
     onVisibleRatioChanged: (Float) -> Unit,
