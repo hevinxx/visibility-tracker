@@ -4,8 +4,10 @@
 
 ## Features
 - **Visibility Ratio Tracking**: Dynamically monitor the visibility ratio of composables, with a value between 0 (completely invisible) and 1 (fully visible).
+- **Customizable Thresholds**: Invoke callbacks based on customized visibility thresholds, allowing for granular control over visibility-related actions.
 - **Lifecycle Awareness**: Optionally treat composables as invisible (`visibilityRatio = 0`) when the `onStop` lifecycle event is triggered, allowing for more precise control over component visibility.
 - **Nested Scrollable Support**: Accurately calculate visibility in complex layouts, including nested `LazyColumn` and `LazyRow` scenarios.
+- **Flexibility**: Supports both specific threshold-based callbacks and general visibility changes, accommodating a wide range of use cases.
 
 ## Installation
 Step1. Add it in your root build.gradle at the end of repositories:
@@ -26,20 +28,31 @@ dependencies {
 ```
 
 ## Usage
-To use `VisibilityTracker`, wrap your composable content within it, providing a callback for visibility ratio changes and specifying behavior during the `onStop` event if needed.
+Wrap your composable content within VisibilityTracker, specifying visibility thresholds and a callback function for visibility ratio changes. You can define precise points at which to trigger actions based on the visibility of the component.
 
 ```kotlin
 VisibilityTracker(
-    onVisibleRatioChanged = { visibilityRatio ->
-        println("Current visibility ratio: $visibilityRatio")
+    thresholds = listOf(0.5f, 1f),
+    onVisibleRatioChanged = { ratio ->
+        if (value >= 1f) {
+            println("This component is fully visible")
+        } else if (value >= 0.5f) {
+            println("More than a half of this component is visible")
+        } else if (value > 0f) {
+            println("Less than a half of this component is visible")
+        } else {
+            println("This component is invisible")
+        }
     },
-    treatOnStopAsInvisible = true // Set to false by default
+    treatOnStopAsInvisible = true // Optional: Treat the composable as invisible on onStop
 ) {
     // Your composable content here
 }
+
 ```
 
 ## Parameters
+- `thresholds`: Optional list of float values defining specific visibility thresholds. If null, the callback is invoked for any change in visibility. Default value is listOf(1f) which means the callback is only invoked when a composable becomes fully visible (visibility ratio of 1) or not.
 - `onVisibleRatioChanged`: A callback function that receives the current visibility ratio as a Float.
 - `treatOnStopAsInvisible`: A Boolean indicating whether to treat the composable as invisible when the `onStop` lifecycle event occurs.
 - `content`: The composable content to track.
