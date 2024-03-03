@@ -54,6 +54,11 @@ VisibilityTracker(
 - Ensure that `VisibilityTracker` is used in a composable context where its size and position can be accurately determined.
 - The visibility ratio calculation accounts for the visible area of the content relative to its total area, adjusting for any overlap with parent composables or the edge of the screen.
 
+## Limitations
+The Visibility Tracker comes with certain limitations. We welcome pull requests if you have solutions to these problems or any enhancements.
+- Tracking precision is compromised when a popup overlays part of a view. This is due to the lack of a parent-child relationship between the popup and the underlying view, making it challenging to accurately detect visibility changes.
+- Setting the threshold to 0f may not accurately capture the moment a composable becomes fully invisible. This limitation arises from the way visibility changes are detected and reported, particularly in scenarios where onGloballyPositioned does not get called as the view disappears.
+
 ## Contributing
 We welcome contributions to `VisibilityTracker`! Please feel free to submit issues or pull requests for bugs, feature requests, or documentation improvements.
 
