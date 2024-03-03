@@ -30,8 +30,13 @@ To use `VisibilityTracker`, wrap your composable content within it, providing a 
 
 ```kotlin
 VisibilityTracker(
+    threshold = 0.5f,
     onVisibleRatioChanged = { visibilityRatio ->
-        println("Current visibility ratio: $visibilityRatio")
+        if (visibilityRatio > 0.5f) {
+            println("More than a half of this composable is visible.")
+        } else {
+            println("Less than a half of this composable is visible.")
+        }
     },
     treatOnStopAsInvisible = true // Set to false by default
 ) {
@@ -40,6 +45,7 @@ VisibilityTracker(
 ```
 
 ## Parameters
+- `threshold`: A float value representing the visibility threshold to trigger the callback. The threshold should be a value between 0 and 1, where 0 indicates completely invisible and 1 indicates fully visible. The callback is invoked when the visibility ratio crosses this threshold, either by becoming more or less visible. Default value is 1f, meaning the callback will only be triggered when the composable becomes fully visible or not.
 - `onVisibleRatioChanged`: A callback function that receives the current visibility ratio as a Float.
 - `treatOnStopAsInvisible`: A Boolean indicating whether to treat the composable as invisible when the `onStop` lifecycle event occurs.
 - `content`: The composable content to track.

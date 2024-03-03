@@ -6,6 +6,7 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -21,6 +22,11 @@ import androidx.lifecycle.LifecycleEventObserver
  * whenever the visible ratio changes. This is particularly useful for detecting when a component
  * becomes visible or hidden in parts, such as in scrolling lists or when obscured by other elements.
  *
+ * @param threshold A float value representing the visibility threshold to trigger the callback. The threshold
+ *                  should be a value between 0 and 1, where 0 indicates completely invisible and 1 indicates
+ *                  fully visible. The callback is invoked when the visibility ratio crosses this threshold,
+ *                  either by becoming more or less visible. Default value is 1f, meaning the callback will
+ *                  only be triggered when the composable becomes fully visible or not.
  * @param onVisibleRatioChanged A callback function that is invoked with the current visibility ratio.
  *                              The visibility ratio is a float value between 0 and 1, where 1 means
  *                              fully visible and 0 means not visible.
@@ -47,6 +53,7 @@ import androidx.lifecycle.LifecycleEventObserver
  */
 @Composable
 fun VisibilityTracker(
+    threshold: Float = 1f,
     onVisibleRatioChanged: (Float) -> Unit,
     treatOnStopAsInvisible: Boolean = false,
     content: @Composable () -> Unit,
@@ -87,12 +94,14 @@ fun VisibilityTracker(
         content()
     }
 
-    var previousVisibleRatio by remember { mutableStateOf<Float?>(null) }
+    var lastVisibleRatio by remember { mutableFloatStateOf(0f) }
     LaunchedEffect(key1 = visibleRatio) {
-        if (visibleRatio != previousVisibleRatio) {
-            previousVisibleRatio = visibleRatio
+        val wasAbove = lastVisibleRatio >= threshold
+        val isAbove = visibleRatio >= threshold
+        if (wasAbove != isAbove) {
             onVisibleRatioChanged(visibleRatio)
         }
+        lastVisibleRatio = visibleRatio
     }
 
     if (treatOnStopAsInvisible) {
