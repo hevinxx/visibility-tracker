@@ -22,14 +22,16 @@ import androidx.lifecycle.LifecycleEventObserver
  * whenever the visible ratio changes. This is particularly useful for detecting when a component
  * becomes visible or hidden in parts, such as in scrolling lists or when obscured by other elements.
  *
- * @param threshold A float value representing the visibility threshold to trigger the callback. The threshold
- *                  should be a value between 0 and 1, where 0 indicates completely invisible and 1 indicates
- *                  fully visible. The callback is invoked when the visibility ratio crosses this threshold,
- *                  either by becoming more or less visible. Default value is 1f, meaning the callback will
- *                  only be triggered when the composable becomes fully visible or not.
- * @param onVisibleRatioChanged A callback function that is invoked with the current visibility ratio.
- *                              The visibility ratio is a float value between 0 and 1, where 1 means
- *                              fully visible and 0 means not visible.
+ * @param threshold A float value representing the visibility threshold to trigger the callback. The
+ *                  threshold should be a value between 0 and 1, where 0 indicates completely invisible
+ *                  and 1 indicates fully visible. Default value is 1f, meaning the callback will only
+ *                  be triggered when the composable becomes fully visible or not.
+ * @param onVisibilityChanged A callback function that is invoked when the visibility ratio of the content
+ *                            surpasses the specified threshold. The Boolean parameter signifies the
+ *                            visibility state, with true indicating that the composable has become
+ *                            more visible than the threshold ratio, and false indicating it has become
+ *                            less visible. This callback is triggered whenever the visibility ratio
+ *                            crosses the threshold in either direction.
  * @param treatOnStopAsInvisible A boolean parameter that determines whether to treat the content as
  *                               completely invisible (visibilityRatio = 0) when the onStop lifecycle
  *                               event is triggered. This can be useful for scenarios where visibility
@@ -40,9 +42,11 @@ import androidx.lifecycle.LifecycleEventObserver
  *
  * Example usage:
  * ```
- * VisibilityTracker(onVisibleRatioChanged = { ratio ->
- *     println("Current visibility ratio: $ratio")
- * }) {
+ * VisibilityTracker(
+ *     threshold = 0.5f,
+ *     onVisibilityChanged = { isVisible ->
+ *         if (isVisible) println("More than a half of this component is visible.")
+ *     }) {
  *     // Your composable content here
  * }
  * ```
@@ -54,8 +58,8 @@ import androidx.lifecycle.LifecycleEventObserver
 @Composable
 fun VisibilityTracker(
     threshold: Float = 1f,
-    onVisibleRatioChanged: (Float) -> Unit,
-    treatOnStopAsInvisible: Boolean = false,
+    onVisibilityChanged: (Boolean) -> Unit,
+    treatOnStopAsInvisible: Boolean = true,
     content: @Composable () -> Unit,
 ) {
     var contentBounds by remember {
@@ -99,7 +103,7 @@ fun VisibilityTracker(
         val wasAbove = lastVisibleRatio >= threshold
         val isAbove = visibleRatio >= threshold
         if (wasAbove != isAbove) {
-            onVisibleRatioChanged(visibleRatio)
+            onVisibilityChanged(isAbove > wasAbove)
         }
         lastVisibleRatio = visibleRatio
     }
