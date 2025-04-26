@@ -23,22 +23,20 @@ import androidx.lifecycle.LifecycleEventObserver
  * becomes visible or hidden in parts, such as in scrolling lists or when obscured by other elements.
  *
  * @param threshold A float value representing the visibility threshold to trigger the callback. The
- *                  threshold should be a value between 0 and 1, where 0 indicates completely invisible
- *                  and 1 indicates fully visible. Default value is 1f, meaning the callback will only
- *                  be triggered when the composable becomes fully visible or not.
- * @param onVisibilityChanged A callback function that is invoked when the visibility ratio of the content
- *                            surpasses the specified threshold. The Boolean parameter signifies the
- *                            visibility state, with true indicating that the composable has become
- *                            more visible than the threshold ratio, and false indicating it has become
- *                            less visible. This callback is triggered whenever the visibility ratio
- *                            crosses the threshold in either direction.
+ *        threshold should be a value between 0 and 1, where 0 indicates completely invisible and 1
+ *        indicates fully visible. Default value is 1f, meaning the callback will only be triggered
+ *        when the composable becomes fully visible or not.
+ * @param onVisibilityChanged A callback function that is invoked when the visibility ratio of the
+ *        content surpasses the specified threshold. The Boolean parameter signifies the visibility
+ *        state, with true indicating that the composable has become more visible than the threshold
+ *        ratio, and false indicating it has become less visible. This callback is triggered
+ *        whenever the visibility ratio crosses the threshold in either direction.
  * @param treatOnStopAsInvisible A boolean parameter that determines whether to treat the content as
- *                               completely invisible (visibilityRatio = 0) when the onStop lifecycle
- *                               event is triggered. This can be useful for scenarios where visibility
- *                               needs to be reset or not counted when the component is not actively
- *                               displayed to the user.
+ *        completely invisible (visibilityRatio = 0) when the onStop lifecycle event is triggered.
+ *        This can be useful for scenarios where visibility needs to be reset or not counted when
+ *        the component is not actively displayed to the user.
  * @param content The composable content whose visibility is to be tracked. This content is wrapped
- *                within the VisibilityTracker and its visibility changes are monitored.
+ *        within the VisibilityTracker and its visibility changes are monitored.
  *
  * Example usage:
  * ```
